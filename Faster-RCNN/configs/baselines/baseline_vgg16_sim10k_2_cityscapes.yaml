@@ -1,0 +1,37 @@
+MODEL:
+  BACKBONE:
+    NAME: 'vgg16'
+  ROI_BOX_HEAD:
+    NUM_CLASSES: 2
+    BOX_PREDICTOR: 'vgg16_predictor'
+    POOL_TYPE: 'align'
+DATASETS:
+  TRAINS: ['sim10k']
+  TESTS: ['cityscapes_car_val']
+INPUT:
+  TRANSFORMS_TRAIN:
+    - name: 'random_flip'
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+  TRANSFORMS_TEST:
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+SOLVER:
+  EPOCHS: 20
+  STEPS: (16, 18)
+  LR: 1e-5
+  BATCH_SIZE: 1
+TEST:
+  EVAL_TYPES: ['voc']
+
+WORK_DIR: './work_dir/baseline_sim10k_2_cityscape_car'

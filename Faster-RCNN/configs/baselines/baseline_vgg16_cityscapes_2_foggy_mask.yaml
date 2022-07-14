@@ -1,0 +1,41 @@
+MODEL:
+  MASK_ON: True
+  BACKBONE:
+    NAME: 'vgg16'
+  RPN:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+  ROI_BOX_HEAD:
+    NUM_CLASSES: 9
+    BOX_PREDICTOR: 'vgg16_predictor'
+    POOL_TYPE: 'align'
+DATASETS:
+  TRAINS: ['cityscapes_train']
+  #  TESTS: ['cityscapes_val', 'foggy_cityscapes_val_0.02']
+  TESTS: ['foggy_cityscapes_val']
+INPUT:
+  TRANSFORMS_TRAIN:
+    - name: 'random_flip'
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+  TRANSFORMS_TEST:
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+SOLVER:
+  EPOCHS: 25
+  STEPS: (16, 22)
+  LR: 1e-5
+  BATCH_SIZE: 1
+TEST:
+  EVAL_TYPES: ['voc']
+
+WORK_DIR: './work_dir/baseline_cityscapes_2_foggy_align_mask'

@@ -1,0 +1,79 @@
+MODEL:
+  BACKBONE:
+    NAME: 'vgg16'
+  RPN:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+  ROI_BOX_HEAD:
+    NUM_CLASSES: 9
+    BOX_PREDICTOR: 'vgg16_predictor'
+    POOL_TYPE: 'align'
+  
+  ROI_ONE_DIS:
+    DOM:
+       LOSS_WEIGHT: 0.1
+       MON: True
+       DISCRIMINATOR: 'OneFCOSDiscriminator'
+       NUM_CONVS: 3
+       GRL_LAMBDA: 0.01
+
+  ROI_TWO_DIS:
+      DOM:
+         LOSS_WEIGHT: 0.1
+         MON: True
+         DISCRIMINATOR: 'VGG16TwoDiscriminator'
+         POOL_RESOLUTION: 7
+         GRL_LAMBDA: 0.01
+      CLS:
+         LOSS_WEIGHT: 0.1
+         MON: False
+         DISCRIMINATOR: 'VGG16TwoDiscriminator_cc'
+         POOL_RESOLUTION: 7
+         GRL_LAMBDA: 0.02
+         LOSS_DIRECT_W: 0.1
+         LOSS_GRL_W: 0.1
+         SAMPLES_THRESH: 0.6
+         NUM_CLASSES: 9
+ADV:
+  LAYERS: [False, False, True]
+  DIS_MODEL:
+    - in_channels: 512
+      func_name: 'cross_entropy'
+      pool_type: 'avg'
+      loss_weight: 1.0
+      window_strides: [2, 2, 2, 2, 2, 2, 2]
+      window_sizes: [3, 9, 15, 21, 27, 33, 37]
+    
+DATASETS:
+  TRAINS: ['cityscapes_train']
+  TARGETS: ['foggy_cityscapes_train_0.02']
+  TESTS: ['foggy_cityscapes_val_0.02']
+DATALOADER:
+  NUM_WORKERS: 2
+INPUT:
+  TRANSFORMS_TRAIN:
+    - name: 'random_flip'
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+  TRANSFORMS_TEST:
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+SOLVER:
+  EPOCHS: 25
+  STEPS: (8, 16, 22)
+  LR: 3e-4
+  BATCH_SIZE: 16
+  WEIGHT_DECAY: 0.0001
+TEST:
+  EVAL_TYPES: ['voc']
+
+WORK_DIR: './debug/cityscape_to_foggy/s1/adv_cityscapes_2_foggy'

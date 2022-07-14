@@ -1,0 +1,39 @@
+MODEL:
+  BACKBONE:
+    NAME: 'resnet101'
+  RPN:
+    ANCHOR_SIZES: (64, 128, 256, 512)
+  ROI_BOX_HEAD:
+    NUM_CLASSES: 7
+    BOX_PREDICTOR: 'resnet101_predictor'
+    POOL_TYPE: 'align'
+DATASETS:
+  TRAINS: ['watercolor_voc_2007_trainval', 'watercolor_voc_2012_trainval']
+  TESTS: ['watercolor_test']
+INPUT:
+  TRANSFORMS_TRAIN:
+    - name: 'random_flip'
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+  TRANSFORMS_TEST:
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+SOLVER:
+  EPOCHS: 10
+  STEPS: (8, 9)
+  LR: 1e-5
+  BATCH_SIZE: 1
+TEST:
+  EVAL_TYPES: ['voc']
+
+WORK_DIR: './work_dir/baseline_voc_2_watercolor'

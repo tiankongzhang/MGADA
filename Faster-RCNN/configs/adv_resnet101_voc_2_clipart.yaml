@@ -1,0 +1,51 @@
+MODEL:
+  BACKBONE:
+    NAME: 'resnet101'
+  RPN:
+    ANCHOR_SIZES: (64, 128, 256, 512)
+  ROI_BOX_HEAD:
+    NUM_CLASSES: 21
+    BOX_PREDICTOR: 'resnet101_predictor'
+    POOL_TYPE: 'align'
+ADV:
+  LAYERS: [False, False, True]
+  LAMBDA_FROM: 1.0
+  LAMBDA_TO: 1.0
+  DIS_MODEL:
+    - in_channels: 1024
+      func_name: 'cross_entropy'
+      pool_type: 'avg'
+      loss_weight: 0.1
+      window_strides: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+      window_sizes: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 35, 38]
+DATASETS:
+  TRAINS: ['voc_2007_trainval', 'voc_2012_trainval']
+  TARGETS: ['voc_clipart_traintest']
+  TESTS: ['voc_clipart_traintest']
+INPUT:
+  TRANSFORMS_TRAIN:
+    - name: 'random_flip'
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+  TRANSFORMS_TEST:
+    - name: 'resize'
+      min_size: 600
+    - name: 'normalize'
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+      to_01: True
+    - name: 'collect'
+SOLVER:
+  EPOCHS: 10
+  STEPS: (8, 9)
+  LR: 1e-5
+  BATCH_SIZE: 1
+TEST:
+  EVAL_TYPES: ['voc']
+
+WORK_DIR: './debug/adv_voc_2_clipart'

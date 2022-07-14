@@ -1,0 +1,1059 @@
+2022-07-14 09:16:31,666 fcos_core INFO: Using 2 GPUs
+2022-07-14 09:16:31,666 fcos_core INFO: Namespace(config_file='./configs/detector/cityscapes_to_foggy/VGG/S0/da_ga_cityscapes_VGG_16_FPN_4x.yaml', distributed=True, local_rank=0, opts=['OUTPUT_DIR', './', 'MODEL.ISSAMPLE', 'True'], skip_test=False)
+2022-07-14 09:16:31,666 fcos_core INFO: Collecting env info (might take some time)
+2022-07-14 09:16:36,126 fcos_core INFO: 
+PyTorch version: 1.3.1
+Is debug build: No
+CUDA used to build PyTorch: 10.1.243
+
+OS: Ubuntu 16.04.6 LTS
+GCC version: (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
+CMake version: version 3.5.1
+
+Python version: 3.6
+Is CUDA available: Yes
+CUDA runtime version: 10.1.168
+GPU models and configuration: 
+GPU 0: Tesla V100-DGXS-32GB
+GPU 1: Tesla V100-DGXS-32GB
+GPU 2: Tesla V100-DGXS-32GB
+GPU 3: Tesla V100-DGXS-32GB
+
+Nvidia driver version: 460.80
+cuDNN version: /usr/lib/x86_64-linux-gnu/libcudnn.so.7.6.0
+
+Versions of relevant libraries:
+[pip] msgpack-numpy==0.4.8
+[pip] numpy==1.16.0
+[pip] torch==1.3.1
+[pip] torchtext==0.4.0
+[pip] torchvision==0.4.2
+[conda] magma-cuda100             2.1.0                         5    local
+[conda] mkl                       2019.1                      144  
+[conda] mkl-include               2019.1                      144  
+[conda] torch                     1.3.1                    pypi_0    pypi
+[conda] torchtext                 0.4.0                    pypi_0    pypi
+[conda] torchvision               0.4.2                    pypi_0    pypi
+        Pillow (8.4.0)
+2022-07-14 09:16:36,127 fcos_core INFO: Loaded configuration file ./configs/detector/cityscapes_to_foggy/VGG/S0/da_ga_cityscapes_VGG_16_FPN_4x.yaml
+2022-07-14 09:16:36,127 fcos_core INFO: 
+MODEL:
+  META_ARCHITECTURE: "GeneralizedRCNN"
+  WEIGHT: 'https://s3.ap-northeast-2.amazonaws.com/open-mmlab/pretrain/third_party/vgg16_caffe-292e1171.pth' # Initialed by pretrained weight
+ 
+  #
+  RPN_ONLY: True
+  FCOS_ON: True
+  DA_ON: True
+  BACKBONE:
+    CONV_BODY: "VGG-16-FPN-RETINANET"
+  RETINANET:
+    USE_C5: False # FCOS uses P5 instead of C5
+  GENBOX:
+      FPN_STRIDES: [8, 16, 32, 64, 128]
+      NUM: 5
+      NUM_CONVS: 4
+  GENFEATURE:
+      LOCAL_GLOBAL_MERGE: True
+      TWOMULTSCALE: True
+      FPN_STRIDES: [8, 16, 32, 64, 128]
+      POOLER_SCALES: [0.125, 0.0625, 0.03125, 0.015625, 0.0078125]
+      POOLER_RESOLUTION: 7
+      POOLER_SAMPLING_RATIO: 0
+  FCOS:
+    NUM_CLASSES: 9
+    INFERENCE_TH: 0.05    # pre_nms_thresh    (default=0.05)
+    PRE_NMS_TOP_N: 1000   # pre_nms_top_n     (default=1000)
+    NMS_TH: 0.5           # nms_thresh        (default=0.6)
+    NUM_CONVS: 4
+  INS:
+      #
+      USE_DIS_GLOBAL: True
+      #
+      DT_DIS_LAMBDA: 0.1
+      GRL_APPLIED_DOMAIN: 'both'
+      #
+      USE_DIS_P7: True
+      USE_DIS_P6: True
+      USE_DIS_P5: True
+      USE_DIS_P4: True
+      USE_DIS_P3: True
+      #
+      DIS_P7_NUM_CONVS: 4
+      DIS_P6_NUM_CONVS: 4
+      DIS_P5_NUM_CONVS: 4
+      DIS_P4_NUM_CONVS: 4
+      DIS_P3_NUM_CONVS: 4
+      #
+      GRL_WEIGHT_P7: 0.01
+      GRL_WEIGHT_P6: 0.01
+      GRL_WEIGHT_P5: 0.01
+      GRL_WEIGHT_P4: 0.01
+      GRL_WEIGHT_P3: 0.01
+  ADV:
+    #
+    USE_DIS_GLOBAL: True
+    USE_DIS_CENTER_AWARE: False
+    #
+    GA_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: 'both'
+    #
+    USE_DIS_P7: True
+    USE_DIS_P6: True
+    USE_DIS_P5: True
+    USE_DIS_P4: True
+    USE_DIS_P3: True
+    #
+    DIS_P7_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P3_NUM_CONVS: 4
+    #
+    GRL_WEIGHT_P7: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P3: 0.01
+  
+  CM:
+      #
+      USE_CM_GLOBAL: False
+      #
+      GL_CM_LAMBDA: 0.1
+      GRL_APPLIED_DOMAIN: 'both'
+      #
+      USE_DIS_P7: True
+      USE_DIS_P6: True
+      USE_DIS_P5: True
+      USE_DIS_P4: True
+      USE_DIS_P3: True
+      #
+      DIS_P7_NUM_CONVS: 4
+      DIS_P6_NUM_CONVS: 4
+      DIS_P5_NUM_CONVS: 4
+      DIS_P4_NUM_CONVS: 4
+      DIS_P3_NUM_CONVS: 4
+      #
+      GRL_WEIGHT_P7: 0.2
+      GRL_WEIGHT_P6: 0.2
+      GRL_WEIGHT_P5: 0.2
+      GRL_WEIGHT_P4: 0.2
+      GRL_WEIGHT_P3: 0.2
+      
+      LOSS_DIRECT_W: 0.002
+      LOSS_GRL_W: 1.0
+      SAMPLES_THRESH: 0.5
+
+TEST:
+  DETECTIONS_PER_IMG: 100 # fpn_post_nms_top_n  (default=100)
+  LEVEL_NUMS: [30, 30, 30, 30, 30]
+DATASETS:
+  TRAIN_SOURCE: ("cityscapes_train_cocostyle", ) 
+  TRAIN_TARGET: ("cityscapes_foggy_train_cocostyle", )
+  TEST: ("cityscapes_foggy_val_cocostyle", )
+INPUT:
+  MIN_SIZE_RANGE_TRAIN: (640, 800)
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MAX_SIZE_TEST: 1333
+DATALOADER:
+  SIZE_DIVISIBILITY: 32
+SOLVER:
+  WEIGHT_DECAY: 0.0001
+  MAX_ITER: 29000
+  IMS_PER_BATCH: 18
+  CHECKPOINT_PERIOD: 500
+  #
+  BACKBONE:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  GENBOX:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  GENFEATURE:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  FCOS:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  DIS:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+
+2022-07-14 09:16:36,129 fcos_core INFO: Running with config:
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  NUM_WORKERS: 4
+  SIZE_DIVISIBILITY: 32
+DATASETS:
+  TEST: ('cityscapes_foggy_val_cocostyle',)
+  TRAIN: ()
+  TRAIN_SOURCE: ('cityscapes_train_cocostyle',)
+  TRAIN_TARGET: ('cityscapes_foggy_train_cocostyle',)
+INPUT:
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_RANGE_TRAIN: (640, 800)
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (800,)
+  PIXEL_MEAN: [102.9801, 115.9465, 122.7717]
+  PIXEL_STD: [1.0, 1.0, 1.0]
+  TO_BGR255: True
+MODEL:
+  ADV:
+    CA_DIS_LAMBDA: 0.1
+    CA_DIS_P3_NUM_CONVS: 4
+    CA_DIS_P4_NUM_CONVS: 4
+    CA_DIS_P5_NUM_CONVS: 4
+    CA_DIS_P6_NUM_CONVS: 4
+    CA_DIS_P7_NUM_CONVS: 4
+    CA_GRL_WEIGHT_P3: 0.1
+    CA_GRL_WEIGHT_P4: 0.1
+    CA_GRL_WEIGHT_P5: 0.1
+    CA_GRL_WEIGHT_P6: 0.1
+    CA_GRL_WEIGHT_P7: 0.1
+    CENTER_AWARE_TYPE: ca_feature
+    CENTER_AWARE_WEIGHT: 20
+    DIS_P3_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P7_NUM_CONVS: 4
+    GA_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: both
+    GRL_WEIGHT_P3: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P7: 0.01
+    USE_DIS_CENTER_AWARE: False
+    USE_DIS_GLOBAL: True
+    USE_DIS_P3: True
+    USE_DIS_P4: True
+    USE_DIS_P5: True
+    USE_DIS_P6: True
+    USE_DIS_P7: True
+  BACKBONE:
+    CONV_BODY: VGG-16-FPN-RETINANET
+    FREEZE_CONV_BODY_AT: 2
+    USE_GN: False
+  CLS_AGNOSTIC_BBOX_REG: False
+  CM:
+    DIS_P3_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P7_NUM_CONVS: 4
+    GL_CM_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: both
+    GRL_WEIGHT_P3: 0.2
+    GRL_WEIGHT_P4: 0.2
+    GRL_WEIGHT_P5: 0.2
+    GRL_WEIGHT_P6: 0.2
+    GRL_WEIGHT_P7: 0.2
+    LOSS_DIRECT_W: 0.002
+    LOSS_GRL_W: 1.0
+    SAMPLES_THRESH: 0.5
+    USE_CM_GLOBAL: False
+    USE_DIS_P3: True
+    USE_DIS_P4: True
+    USE_DIS_P5: True
+    USE_DIS_P6: True
+    USE_DIS_P7: True
+  DA_ON: True
+  DEVICE: cuda
+  EMBEDDING:
+    RANGE_SCALE: ((-1, 64), (64, 128), (128, 256), (256, 512), (512, 3000))
+    SIGMA: 0.4
+  FBNET:
+    ARCH: default
+    ARCH_DEF: 
+    BN_TYPE: bn
+    DET_HEAD_BLOCKS: []
+    DET_HEAD_LAST_SCALE: 1.0
+    DET_HEAD_STRIDE: 0
+    DW_CONV_SKIP_BN: True
+    DW_CONV_SKIP_RELU: True
+    KPTS_HEAD_BLOCKS: []
+    KPTS_HEAD_LAST_SCALE: 0.0
+    KPTS_HEAD_STRIDE: 0
+    MASK_HEAD_BLOCKS: []
+    MASK_HEAD_LAST_SCALE: 0.0
+    MASK_HEAD_STRIDE: 0
+    RPN_BN_TYPE: 
+    RPN_HEAD_BLOCKS: 0
+    SCALE_FACTOR: 1.0
+    WIDTH_DIVISOR: 1
+  FCOS:
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    INFERENCE_TH: 0.05
+    LOSS_ALPHA: 0.25
+    LOSS_GAMMA: 2.0
+    NMS_TH: 0.5
+    NUM_CLASSES: 9
+    NUM_CONVS: 4
+    PRE_NMS_TOP_N: 1000
+    PRIOR_PROB: 0.01
+  FCOS_ON: True
+  FPN:
+    USE_GN: False
+    USE_RELU: False
+  GENBOX:
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    NUM: 5
+    NUM_CONVS: 4
+  GENFEATURE:
+    CHANNELS_LEVEL: [64, 128, 256, 512, 1024]
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    LOCAL_GLOBAL_MERGE: True
+    POOLER_RESOLUTION: 7
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: [0.125, 0.0625, 0.03125, 0.015625, 0.0078125]
+    TWOMULTSCALE: True
+  GROUP_NORM:
+    DIM_PER_GP: -1
+    EPSILON: 1e-05
+    NUM_GROUPS: 32
+  INS:
+    DIS_P3_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P7_NUM_CONVS: 4
+    DT_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: both
+    GRL_WEIGHT_P3: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P7: 0.01
+    USE_DIS_GLOBAL: True
+    USE_DIS_P3: True
+    USE_DIS_P4: True
+    USE_DIS_P5: True
+    USE_DIS_P6: True
+    USE_DIS_P7: True
+  ISSAMPLE: True
+  KEYPOINT_ON: False
+  MASK_ON: False
+  META_ARCHITECTURE: GeneralizedRCNN
+  PRETRAIN: 
+  RESNETS:
+    BACKBONE_OUT_CHANNELS: 1024
+    NUM_GROUPS: 1
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_FUNC: StemWithFixedBatchNorm
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: True
+    TRANS_FUNC: BottleneckWithFixedBatchNorm
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+    ANCHOR_STRIDES: (8, 16, 32, 64, 128)
+    ASPECT_RATIOS: (0.5, 1.0, 2.0)
+    BBOX_REG_BETA: 0.11
+    BBOX_REG_WEIGHT: 4.0
+    BG_IOU_THRESHOLD: 0.4
+    FG_IOU_THRESHOLD: 0.5
+    INFERENCE_TH: 0.05
+    LOSS_ALPHA: 0.25
+    LOSS_GAMMA: 2.0
+    NMS_TH: 0.4
+    NUM_CLASSES: 81
+    NUM_CONVS: 4
+    OCTAVE: 2.0
+    PRE_NMS_TOP_N: 1000
+    PRIOR_PROB: 0.01
+    SCALES_PER_OCTAVE: 3
+    STRADDLE_THRESH: 0
+    USE_C5: False
+  RETINANET_ON: False
+  ROI_BOX_HEAD:
+    CONV_HEAD_DIM: 256
+    DILATION: 1
+    FEATURE_EXTRACTOR: ResNet50Conv5ROIFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    NUM_CLASSES: 81
+    NUM_STACKED_CONVS: 4
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    PREDICTOR: FastRCNNPredictor
+    USE_GN: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    BG_IOU_THRESHOLD: 0.5
+    DETECTIONS_PER_IMG: 100
+    FG_IOU_THRESHOLD: 0.5
+    NMS: 0.5
+    POSITIVE_FRACTION: 0.25
+    SCORE_THRESH: 0.05
+    USE_FPN: False
+  ROI_KEYPOINT_HEAD:
+    CONV_LAYERS: (512, 512, 512, 512, 512, 512, 512, 512)
+    FEATURE_EXTRACTOR: KeypointRCNNFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    NUM_CLASSES: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    PREDICTOR: KeypointRCNNPredictor
+    RESOLUTION: 14
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+  ROI_MASK_HEAD:
+    CONV_LAYERS: (256, 256, 256, 256)
+    DILATION: 1
+    FEATURE_EXTRACTOR: ResNet50Conv5ROIFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    POSTPROCESS_MASKS: False
+    POSTPROCESS_MASKS_THRESHOLD: 0.5
+    PREDICTOR: MaskRCNNC4Predictor
+    RESOLUTION: 14
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+    USE_GN: False
+  RPN:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+    ANCHOR_STRIDE: (16,)
+    ASPECT_RATIOS: (0.5, 1.0, 2.0)
+    BATCH_SIZE_PER_IMAGE: 256
+    BG_IOU_THRESHOLD: 0.3
+    FG_IOU_THRESHOLD: 0.7
+    FPN_POST_NMS_TOP_N_TEST: 2000
+    FPN_POST_NMS_TOP_N_TRAIN: 2000
+    MIN_SIZE: 0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOP_N_TEST: 1000
+    POST_NMS_TOP_N_TRAIN: 2000
+    PRE_NMS_TOP_N_TEST: 6000
+    PRE_NMS_TOP_N_TRAIN: 12000
+    RPN_HEAD: SingleConvRPNHead
+    STRADDLE_THRESH: 0
+    USE_FPN: False
+  RPN_ONLY: True
+  START_ITER: 0
+  TRAIN_MARK: False
+  USE_SYNCBN: False
+  WEIGHT: https://s3.ap-northeast-2.amazonaws.com/open-mmlab/pretrain/third_party/vgg16_caffe-292e1171.pth
+OUTPUT_DIR: ./
+PATHS_CATALOG: /data/home/wenzhang/Documents/2022/cvpr/code/MGAD/fcos_core/config/paths_catalog.py
+SOLVER:
+  BACKBONE:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  BONE_DETECT_EPOCH: 2000
+  CHECKPOINT_PERIOD: 500
+  DIS:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  FCOS:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  GENBOX:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  GENFEATURE:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  IMS_PER_BATCH: 18
+  MAX_ITER: 29000
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0
+TEST:
+  DETECTIONS_PER_IMG: 100
+  EXPECTED_RESULTS: []
+  EXPECTED_RESULTS_SIGMA_TOL: 4
+  IMS_PER_BATCH: 8
+  LEVEL_NUMS: [30, 30, 30, 30, 30]
+2022-07-14 09:16:37,163 fcos_core.utils.checkpoint INFO: Loading checkpoint from https://s3.ap-northeast-2.amazonaws.com/open-mmlab/pretrain/third_party/vgg16_caffe-292e1171.pth
+2022-07-14 09:16:37,163 fcos_core.utils.checkpoint INFO: url https://s3.ap-northeast-2.amazonaws.com/open-mmlab/pretrain/third_party/vgg16_caffe-292e1171.pth cached in /root/.torch/models/vgg16_caffe-292e1171.pth
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.0.bias     loaded from features.0.bias    of shape (64,)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.0.weight   loaded from features.0.weight  of shape (64, 3, 3, 3)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.10.bias    loaded from features.10.bias   of shape (256,)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.10.weight  loaded from features.10.weight of shape (256, 128, 3, 3)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.12.bias    loaded from features.12.bias   of shape (256,)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.12.weight  loaded from features.12.weight of shape (256, 256, 3, 3)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.14.bias    loaded from features.14.bias   of shape (256,)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.14.weight  loaded from features.14.weight of shape (256, 256, 3, 3)
+2022-07-14 09:16:37,206 fcos_core.utils.model_serialization INFO: module.body.features.17.bias    loaded from features.17.bias   of shape (512,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.17.weight  loaded from features.17.weight of shape (512, 256, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.19.bias    loaded from features.19.bias   of shape (512,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.19.weight  loaded from features.19.weight of shape (512, 512, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.2.bias     loaded from features.2.bias    of shape (64,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.2.weight   loaded from features.2.weight  of shape (64, 64, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.21.bias    loaded from features.21.bias   of shape (512,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.21.weight  loaded from features.21.weight of shape (512, 512, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.24.bias    loaded from features.24.bias   of shape (512,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.24.weight  loaded from features.24.weight of shape (512, 512, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.26.bias    loaded from features.26.bias   of shape (512,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.26.weight  loaded from features.26.weight of shape (512, 512, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.28.bias    loaded from features.28.bias   of shape (512,)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.28.weight  loaded from features.28.weight of shape (512, 512, 3, 3)
+2022-07-14 09:16:37,207 fcos_core.utils.model_serialization INFO: module.body.features.5.bias     loaded from features.5.bias    of shape (128,)
+2022-07-14 09:16:37,208 fcos_core.utils.model_serialization INFO: module.body.features.5.weight   loaded from features.5.weight  of shape (128, 64, 3, 3)
+2022-07-14 09:16:37,208 fcos_core.utils.model_serialization INFO: module.body.features.7.bias     loaded from features.7.bias    of shape (128,)
+2022-07-14 09:16:37,208 fcos_core.utils.model_serialization INFO: module.body.features.7.weight   loaded from features.7.weight  of shape (128, 128, 3, 3)
+2022-07-14 09:16:37,220 fcos_core.data.build WARNING: When using more than one image per GPU you may encounter an out-of-memory (OOM) error if your GPU does not have sufficient memory. If this happens, you can reduce SOLVER.IMS_PER_BATCH (for training) or TEST.IMS_PER_BATCH (for inference). For training, you must also adjust the learning rate and schedule length according to the linear scaling rule. See for example: https://github.com/facebookresearch/Detectron/blob/master/configs/getting_started/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml#L14
+2022-07-14 09:16:42,620 fcos_core.data.build WARNING: When using more than one image per GPU you may encounter an out-of-memory (OOM) error if your GPU does not have sufficient memory. If this happens, you can reduce SOLVER.IMS_PER_BATCH (for training) or TEST.IMS_PER_BATCH (for inference). For training, you must also adjust the learning rate and schedule length according to the linear scaling rule. See for example: https://github.com/facebookresearch/Detectron/blob/master/configs/getting_started/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml#L14
+2022-07-14 09:16:48,129 fcos_core.trainer INFO: Start training
+2022-07-14 09:18:29,348 fcos_core.trainer INFO: eta: 1 day, 16:44:21  iter: 20  loss_gs: 6.7177 (7.4938)  loss_centerness_gs: 0.8609 (0.9108)  loss_cls_gs: 0.9916 (1.1763)  loss_reg_box_gs: 1.5806 (2.2866)  loss_reg_gs: 2.4331 (3.1201)  loss_ds: 0.6943 (0.6944)  loss_adv_P3_ds: 0.0672 (0.0673)  loss_adv_P4_ds: 0.0673 (0.0666)  loss_adv_P5_ds: 0.0682 (0.0701)  loss_adv_P6_ds: 0.0715 (0.0715)  loss_adv_P7_ds: 0.0688 (0.0690)  loss_detect_P3_ds: 0.0679 (0.0683)  loss_detect_P4_ds: 0.0688 (0.0694)  loss_detect_P5_ds: 0.0696 (0.0705)  loss_detect_P6_ds: 0.0701 (0.0714)  loss_detect_P7_ds: 0.0691 (0.0702)  loss_dt: 0.6889 (0.6919)  loss_adv_P3_dt: 0.0681 (0.0696)  loss_adv_P4_dt: 0.0714 (0.0737)  loss_adv_P5_dt: 0.0665 (0.0665)  loss_adv_P6_dt: 0.0675 (0.0682)  loss_adv_P7_dt: 0.0699 (0.0705)  loss_detect_P3_dt: 0.0678 (0.0685)  loss_detect_P4_dt: 0.0682 (0.0691)  loss_detect_P5_dt: 0.0676 (0.0683)  loss_detect_P6_dt: 0.0679 (0.0682)  loss_detect_P7_dt: 0.0683 (0.0693)  zero_box: 0.0000 (0.0000)  time: 4.8971 (5.0608)  data: 0.0195 (0.1942)  lr_backbone: 0.001667  lr_fcos: 0.001667  lr_dis: 0.001667  max mem: 16699
+2022-07-14 09:29:43,297 fcos_core INFO: Using 2 GPUs
+2022-07-14 09:29:43,297 fcos_core INFO: Namespace(config_file='./configs/detector/cityscapes_to_foggy/VGG/S1/da_ga_cityscapes_VGG_16_FPN_4x.yaml', distributed=True, local_rank=0, opts=['OUTPUT_DIR', './', 'MODEL.ISSAMPLE', 'True'], skip_test=False)
+2022-07-14 09:29:43,298 fcos_core INFO: Collecting env info (might take some time)
+2022-07-14 09:29:47,648 fcos_core INFO: 
+PyTorch version: 1.3.1
+Is debug build: No
+CUDA used to build PyTorch: 10.1.243
+
+OS: Ubuntu 16.04.6 LTS
+GCC version: (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
+CMake version: version 3.5.1
+
+Python version: 3.6
+Is CUDA available: Yes
+CUDA runtime version: 10.1.168
+GPU models and configuration: 
+GPU 0: Tesla V100-DGXS-32GB
+GPU 1: Tesla V100-DGXS-32GB
+GPU 2: Tesla V100-DGXS-32GB
+GPU 3: Tesla V100-DGXS-32GB
+
+Nvidia driver version: 460.80
+cuDNN version: /usr/lib/x86_64-linux-gnu/libcudnn.so.7.6.0
+
+Versions of relevant libraries:
+[pip] msgpack-numpy==0.4.8
+[pip] numpy==1.16.0
+[pip] torch==1.3.1
+[pip] torchtext==0.4.0
+[pip] torchvision==0.4.2
+[conda] magma-cuda100             2.1.0                         5    local
+[conda] mkl                       2019.1                      144  
+[conda] mkl-include               2019.1                      144  
+[conda] torch                     1.3.1                    pypi_0    pypi
+[conda] torchtext                 0.4.0                    pypi_0    pypi
+[conda] torchvision               0.4.2                    pypi_0    pypi
+        Pillow (8.4.0)
+2022-07-14 09:29:47,649 fcos_core INFO: Loaded configuration file ./configs/detector/cityscapes_to_foggy/VGG/S1/da_ga_cityscapes_VGG_16_FPN_4x.yaml
+2022-07-14 09:29:47,649 fcos_core INFO: 
+MODEL:
+  META_ARCHITECTURE: "GeneralizedRCNN"
+  WEIGHT: './S0/model_rs.pth' # Initialed by pretrained weight
+
+  #
+  RPN_ONLY: True
+  FCOS_ON: True
+  DA_ON: True
+  BACKBONE:
+    CONV_BODY: "VGG-16-FPN-RETINANET"
+  RETINANET:
+    USE_C5: False # FCOS uses P5 instead of C5
+  GENBOX:
+      FPN_STRIDES: [8, 16, 32, 64, 128]
+      NUM: 5
+      NUM_CONVS: 4
+  GENFEATURE:
+      LOCAL_GLOBAL_MERGE: True
+      TWOMULTSCALE: True
+      FPN_STRIDES: [8, 16, 32, 64, 128]
+      POOLER_SCALES: [0.125, 0.0625, 0.03125, 0.015625, 0.0078125]
+      POOLER_RESOLUTION: 7
+      POOLER_SAMPLING_RATIO: 0
+  FCOS:
+    NUM_CLASSES: 9
+    INFERENCE_TH: 0.05    # pre_nms_thresh    (default=0.05)
+    PRE_NMS_TOP_N: 1000   # pre_nms_top_n     (default=1000)
+    NMS_TH: 0.5           # nms_thresh        (default=0.6)
+    NUM_CONVS: 4
+  INS:
+      #
+      USE_DIS_GLOBAL: True
+      #
+      DT_DIS_LAMBDA: 0.1
+      GRL_APPLIED_DOMAIN: 'both'
+      #
+      USE_DIS_P7: True
+      USE_DIS_P6: True
+      USE_DIS_P5: True
+      USE_DIS_P4: True
+      USE_DIS_P3: True
+      #
+      DIS_P7_NUM_CONVS: 4
+      DIS_P6_NUM_CONVS: 4
+      DIS_P5_NUM_CONVS: 4
+      DIS_P4_NUM_CONVS: 4
+      DIS_P3_NUM_CONVS: 4
+      #
+      GRL_WEIGHT_P7: 0.01
+      GRL_WEIGHT_P6: 0.01
+      GRL_WEIGHT_P5: 0.01
+      GRL_WEIGHT_P4: 0.01
+      GRL_WEIGHT_P3: 0.01
+  ADV:
+    #
+    USE_DIS_GLOBAL: True
+    USE_DIS_CENTER_AWARE: False
+    #
+    GA_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: 'both'
+    #
+    USE_DIS_P7: True
+    USE_DIS_P6: True
+    USE_DIS_P5: True
+    USE_DIS_P4: True
+    USE_DIS_P3: True
+    #
+    DIS_P7_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P3_NUM_CONVS: 4
+    #
+    GRL_WEIGHT_P7: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P3: 0.01
+
+  CM:
+      #
+      USE_CM_GLOBAL: True
+      #
+      GL_CM_LAMBDA: 0.2
+      GRL_APPLIED_DOMAIN: 'both'
+      #
+      USE_DIS_P7: True
+      USE_DIS_P6: True
+      USE_DIS_P5: True
+      USE_DIS_P4: True
+      USE_DIS_P3: True
+      #
+      DIS_P7_NUM_CONVS: 4
+      DIS_P6_NUM_CONVS: 4
+      DIS_P5_NUM_CONVS: 4
+      DIS_P4_NUM_CONVS: 4
+      DIS_P3_NUM_CONVS: 4
+      #
+      GRL_WEIGHT_P7: 0.01
+      GRL_WEIGHT_P6: 0.01
+      GRL_WEIGHT_P5: 0.01
+      GRL_WEIGHT_P4: 0.01
+      GRL_WEIGHT_P3: 0.01
+
+      LOSS_DIRECT_W: 1.0
+      LOSS_GRL_W: 0.1
+      SAMPLES_THRESH: 0.5
+
+TEST:
+  DETECTIONS_PER_IMG: 100 # fpn_post_nms_top_n  (default=100)
+  LEVEL_NUMS: [30, 30, 30, 30, 30]
+DATASETS:
+  TRAIN_SOURCE: ("cityscapes_train_cocostyle", )
+  TRAIN_TARGET: ("cityscapes_foggy_train_cocostyle", )
+  TEST: ("cityscapes_foggy_val_cocostyle", )
+INPUT:
+  MIN_SIZE_RANGE_TRAIN: (640, 800)
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MAX_SIZE_TEST: 1333
+DATALOADER:
+  SIZE_DIVISIBILITY: 32
+  #NUM_WORKERS: 2
+SOLVER:
+  WEIGHT_DECAY: 0.0001
+  MAX_ITER: 29000
+  IMS_PER_BATCH: 20
+  CHECKPOINT_PERIOD: 500
+  #
+  BACKBONE:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  GENBOX:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  GENFEATURE:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  FCOS:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  DIS:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+
+2022-07-14 09:29:47,651 fcos_core INFO: Running with config:
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  NUM_WORKERS: 4
+  SIZE_DIVISIBILITY: 32
+DATASETS:
+  TEST: ('cityscapes_foggy_val_cocostyle',)
+  TRAIN: ()
+  TRAIN_SOURCE: ('cityscapes_train_cocostyle',)
+  TRAIN_TARGET: ('cityscapes_foggy_train_cocostyle',)
+INPUT:
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_RANGE_TRAIN: (640, 800)
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (800,)
+  PIXEL_MEAN: [102.9801, 115.9465, 122.7717]
+  PIXEL_STD: [1.0, 1.0, 1.0]
+  TO_BGR255: True
+MODEL:
+  ADV:
+    CA_DIS_LAMBDA: 0.1
+    CA_DIS_P3_NUM_CONVS: 4
+    CA_DIS_P4_NUM_CONVS: 4
+    CA_DIS_P5_NUM_CONVS: 4
+    CA_DIS_P6_NUM_CONVS: 4
+    CA_DIS_P7_NUM_CONVS: 4
+    CA_GRL_WEIGHT_P3: 0.1
+    CA_GRL_WEIGHT_P4: 0.1
+    CA_GRL_WEIGHT_P5: 0.1
+    CA_GRL_WEIGHT_P6: 0.1
+    CA_GRL_WEIGHT_P7: 0.1
+    CENTER_AWARE_TYPE: ca_feature
+    CENTER_AWARE_WEIGHT: 20
+    DIS_P3_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P7_NUM_CONVS: 4
+    GA_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: both
+    GRL_WEIGHT_P3: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P7: 0.01
+    USE_DIS_CENTER_AWARE: False
+    USE_DIS_GLOBAL: True
+    USE_DIS_P3: True
+    USE_DIS_P4: True
+    USE_DIS_P5: True
+    USE_DIS_P6: True
+    USE_DIS_P7: True
+  BACKBONE:
+    CONV_BODY: VGG-16-FPN-RETINANET
+    FREEZE_CONV_BODY_AT: 2
+    USE_GN: False
+  CLS_AGNOSTIC_BBOX_REG: False
+  CM:
+    DIS_P3_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P7_NUM_CONVS: 4
+    GL_CM_LAMBDA: 0.2
+    GRL_APPLIED_DOMAIN: both
+    GRL_WEIGHT_P3: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P7: 0.01
+    LOSS_DIRECT_W: 1.0
+    LOSS_GRL_W: 0.1
+    SAMPLES_THRESH: 0.5
+    USE_CM_GLOBAL: True
+    USE_DIS_P3: True
+    USE_DIS_P4: True
+    USE_DIS_P5: True
+    USE_DIS_P6: True
+    USE_DIS_P7: True
+  DA_ON: True
+  DEVICE: cuda
+  EMBEDDING:
+    RANGE_SCALE: ((-1, 64), (64, 128), (128, 256), (256, 512), (512, 3000))
+    SIGMA: 0.4
+  FBNET:
+    ARCH: default
+    ARCH_DEF: 
+    BN_TYPE: bn
+    DET_HEAD_BLOCKS: []
+    DET_HEAD_LAST_SCALE: 1.0
+    DET_HEAD_STRIDE: 0
+    DW_CONV_SKIP_BN: True
+    DW_CONV_SKIP_RELU: True
+    KPTS_HEAD_BLOCKS: []
+    KPTS_HEAD_LAST_SCALE: 0.0
+    KPTS_HEAD_STRIDE: 0
+    MASK_HEAD_BLOCKS: []
+    MASK_HEAD_LAST_SCALE: 0.0
+    MASK_HEAD_STRIDE: 0
+    RPN_BN_TYPE: 
+    RPN_HEAD_BLOCKS: 0
+    SCALE_FACTOR: 1.0
+    WIDTH_DIVISOR: 1
+  FCOS:
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    INFERENCE_TH: 0.05
+    LOSS_ALPHA: 0.25
+    LOSS_GAMMA: 2.0
+    NMS_TH: 0.5
+    NUM_CLASSES: 9
+    NUM_CONVS: 4
+    PRE_NMS_TOP_N: 1000
+    PRIOR_PROB: 0.01
+  FCOS_ON: True
+  FPN:
+    USE_GN: False
+    USE_RELU: False
+  GENBOX:
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    NUM: 5
+    NUM_CONVS: 4
+  GENFEATURE:
+    CHANNELS_LEVEL: [64, 128, 256, 512, 1024]
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    LOCAL_GLOBAL_MERGE: True
+    POOLER_RESOLUTION: 7
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: [0.125, 0.0625, 0.03125, 0.015625, 0.0078125]
+    TWOMULTSCALE: True
+  GROUP_NORM:
+    DIM_PER_GP: -1
+    EPSILON: 1e-05
+    NUM_GROUPS: 32
+  INS:
+    DIS_P3_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P7_NUM_CONVS: 4
+    DT_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: both
+    GRL_WEIGHT_P3: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P7: 0.01
+    USE_DIS_GLOBAL: True
+    USE_DIS_P3: True
+    USE_DIS_P4: True
+    USE_DIS_P5: True
+    USE_DIS_P6: True
+    USE_DIS_P7: True
+  ISSAMPLE: True
+  KEYPOINT_ON: False
+  MASK_ON: False
+  META_ARCHITECTURE: GeneralizedRCNN
+  PRETRAIN: 
+  RESNETS:
+    BACKBONE_OUT_CHANNELS: 1024
+    NUM_GROUPS: 1
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_FUNC: StemWithFixedBatchNorm
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: True
+    TRANS_FUNC: BottleneckWithFixedBatchNorm
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+    ANCHOR_STRIDES: (8, 16, 32, 64, 128)
+    ASPECT_RATIOS: (0.5, 1.0, 2.0)
+    BBOX_REG_BETA: 0.11
+    BBOX_REG_WEIGHT: 4.0
+    BG_IOU_THRESHOLD: 0.4
+    FG_IOU_THRESHOLD: 0.5
+    INFERENCE_TH: 0.05
+    LOSS_ALPHA: 0.25
+    LOSS_GAMMA: 2.0
+    NMS_TH: 0.4
+    NUM_CLASSES: 81
+    NUM_CONVS: 4
+    OCTAVE: 2.0
+    PRE_NMS_TOP_N: 1000
+    PRIOR_PROB: 0.01
+    SCALES_PER_OCTAVE: 3
+    STRADDLE_THRESH: 0
+    USE_C5: False
+  RETINANET_ON: False
+  ROI_BOX_HEAD:
+    CONV_HEAD_DIM: 256
+    DILATION: 1
+    FEATURE_EXTRACTOR: ResNet50Conv5ROIFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    NUM_CLASSES: 81
+    NUM_STACKED_CONVS: 4
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    PREDICTOR: FastRCNNPredictor
+    USE_GN: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    BG_IOU_THRESHOLD: 0.5
+    DETECTIONS_PER_IMG: 100
+    FG_IOU_THRESHOLD: 0.5
+    NMS: 0.5
+    POSITIVE_FRACTION: 0.25
+    SCORE_THRESH: 0.05
+    USE_FPN: False
+  ROI_KEYPOINT_HEAD:
+    CONV_LAYERS: (512, 512, 512, 512, 512, 512, 512, 512)
+    FEATURE_EXTRACTOR: KeypointRCNNFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    NUM_CLASSES: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    PREDICTOR: KeypointRCNNPredictor
+    RESOLUTION: 14
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+  ROI_MASK_HEAD:
+    CONV_LAYERS: (256, 256, 256, 256)
+    DILATION: 1
+    FEATURE_EXTRACTOR: ResNet50Conv5ROIFeatureExtractor
+    MLP_HEAD_DIM: 1024
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_SCALES: (0.0625,)
+    POSTPROCESS_MASKS: False
+    POSTPROCESS_MASKS_THRESHOLD: 0.5
+    PREDICTOR: MaskRCNNC4Predictor
+    RESOLUTION: 14
+    SHARE_BOX_FEATURE_EXTRACTOR: True
+    USE_GN: False
+  RPN:
+    ANCHOR_SIZES: (32, 64, 128, 256, 512)
+    ANCHOR_STRIDE: (16,)
+    ASPECT_RATIOS: (0.5, 1.0, 2.0)
+    BATCH_SIZE_PER_IMAGE: 256
+    BG_IOU_THRESHOLD: 0.3
+    FG_IOU_THRESHOLD: 0.7
+    FPN_POST_NMS_TOP_N_TEST: 2000
+    FPN_POST_NMS_TOP_N_TRAIN: 2000
+    MIN_SIZE: 0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOP_N_TEST: 1000
+    POST_NMS_TOP_N_TRAIN: 2000
+    PRE_NMS_TOP_N_TEST: 6000
+    PRE_NMS_TOP_N_TRAIN: 12000
+    RPN_HEAD: SingleConvRPNHead
+    STRADDLE_THRESH: 0
+    USE_FPN: False
+  RPN_ONLY: True
+  START_ITER: 0
+  TRAIN_MARK: False
+  USE_SYNCBN: False
+  WEIGHT: ./S0/model_rs.pth
+OUTPUT_DIR: ./
+PATHS_CATALOG: /data/home/wenzhang/Documents/2022/cvpr/code/MGAD/fcos_core/config/paths_catalog.py
+SOLVER:
+  BACKBONE:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  BONE_DETECT_EPOCH: 2000
+  CHECKPOINT_PERIOD: 500
+  DIS:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  FCOS:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  GENBOX:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  GENFEATURE:
+    BASE_LR: 0.005
+    BIAS_LR_FACTOR: 2
+    GAMMA: 0.1
+    STEPS: (120000, 160000)
+    WARMUP_FACTOR: 0.3333333333333333
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: constant
+  IMS_PER_BATCH: 20
+  MAX_ITER: 29000
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0
+TEST:
+  DETECTIONS_PER_IMG: 100
+  EXPECTED_RESULTS: []
+  EXPECTED_RESULTS_SIGMA_TOL: 4
+  IMS_PER_BATCH: 8
+  LEVEL_NUMS: [30, 30, 30, 30, 30]

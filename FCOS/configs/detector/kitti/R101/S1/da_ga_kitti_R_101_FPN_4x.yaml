@@ -1,0 +1,155 @@
+MODEL:
+  META_ARCHITECTURE: "GeneralizedRCNN"
+  WEIGHT: "./model_rs.pth"
+  #
+  RPN_ONLY: True
+  FCOS_ON: True
+  DA_ON: True
+  BACKBONE:
+    CONV_BODY: "R-101-FPN-RETINANET"
+  RESNETS:
+    BACKBONE_OUT_CHANNELS: 256
+  RETINANET:
+    USE_C5: False # FCOS uses P5 instead of C5
+  GENBOX:
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    NUM: 5
+    NUM_CONVS: 4
+  GENFEATURE:
+    LOCAL_GLOBAL_MERGE: True
+    TWOMULTSCALE: True
+    FPN_STRIDES: [8, 16, 32, 64, 128]
+    POOLER_SCALES: [0.125, 0.0625, 0.03125, 0.015625, 0.0078125]
+    POOLER_RESOLUTION: 7
+    POOLER_SAMPLING_RATIO: 2
+  FCOS:
+    NUM_CLASSES: 2
+    INFERENCE_TH: 0.05    # pre_nms_thresh    (default=0.05)
+    PRE_NMS_TOP_N: 1000   # pre_nms_top_n     (default=1000)
+    NMS_TH: 0.5           # nms_thresh        (default=0.6)
+  INS:
+    #
+    USE_DIS_GLOBAL: True
+    #
+    DT_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: 'both'
+    #
+    USE_DIS_P7: True
+    USE_DIS_P6: True
+    USE_DIS_P5: True
+    USE_DIS_P4: True
+    USE_DIS_P3: True
+    #
+    DIS_P7_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P3_NUM_CONVS: 4
+    #
+    GRL_WEIGHT_P7: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P3: 0.01
+  ADV:
+    #
+    USE_DIS_GLOBAL: True
+    USE_DIS_CENTER_AWARE: False
+    #
+    GA_DIS_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: 'both'
+    #
+    USE_DIS_P7: True
+    USE_DIS_P6: True
+    USE_DIS_P5: True
+    USE_DIS_P4: True
+    USE_DIS_P3: True
+    #
+    DIS_P7_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P3_NUM_CONVS: 4
+    #
+    GRL_WEIGHT_P7: 0.01
+    GRL_WEIGHT_P6: 0.01
+    GRL_WEIGHT_P5: 0.01
+    GRL_WEIGHT_P4: 0.01
+    GRL_WEIGHT_P3: 0.01
+  CM:
+    #
+    USE_CM_GLOBAL: True
+    #
+    GL_CM_LAMBDA: 0.1
+    GRL_APPLIED_DOMAIN: 'both'
+    #
+    USE_DIS_P7: True
+    USE_DIS_P6: True
+    USE_DIS_P5: True
+    USE_DIS_P4: True
+    USE_DIS_P3: True
+    #
+    DIS_P7_NUM_CONVS: 4
+    DIS_P6_NUM_CONVS: 4
+    DIS_P5_NUM_CONVS: 4
+    DIS_P4_NUM_CONVS: 4
+    DIS_P3_NUM_CONVS: 4
+    #
+    GRL_WEIGHT_P7: 0.1
+    GRL_WEIGHT_P6: 0.1
+    GRL_WEIGHT_P5: 0.1
+    GRL_WEIGHT_P4: 0.1
+    GRL_WEIGHT_P3: 0.1
+      
+    LOSS_DIRECT_W: 1.0
+    LOSS_GRL_W: 0.0
+    SAMPLES_THRESH: 0.5
+TEST:
+  DETECTIONS_PER_IMG: 100 # fpn_post_nms_top_n  (default=100)
+  LEVEL_NUMS: [20, 40, 40, 10, 4]
+DATASETS:
+  TRAIN_SOURCE: ("kitti_train_caronly", ) 
+  TRAIN_TARGET: ("cityscapes_train_caronly_cocostyle", )
+  TEST: ("cityscapes_val_caronly_cocostyle", )
+INPUT:
+  MIN_SIZE_RANGE_TRAIN: (640, 800)
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MAX_SIZE_TEST: 1333
+DATALOADER:
+  SIZE_DIVISIBILITY: 32
+SOLVER:
+  WEIGHT_DECAY: 0.0001
+  MAX_ITER: 20000
+  IMS_PER_BATCH: 20
+  CHECKPOINT_PERIOD: 100
+  #
+  BACKBONE:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  GENBOX:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  GENFEATURE:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  FCOS:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
+  #
+  DIS:
+    BASE_LR: 0.005
+    STEPS: (120000, 160000)
+    WARMUP_ITERS: 500
+    WARMUP_METHOD: "constant"
